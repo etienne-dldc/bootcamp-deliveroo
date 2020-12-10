@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Header from "./Header";
 import Content from "./Content";
 
 const App = () => {
-  const [cart, setCart] = React.useState([
+  const [cart, setCart] = useState([
     // {
     //   id: '1519055545-88',
     //   price: 25,
@@ -18,16 +18,16 @@ const App = () => {
     //   amount: 2,
     // },
   ]);
-  const [data, setData] = React.useState(null);
+  const [data, setData] = useState(null);
 
-  const addItem = itemId => {
-    const exist = cart.find(cartItem => cartItem.id === itemId);
+  const addItem = (itemId) => {
+    const exist = cart.find((cartItem) => cartItem.id === itemId);
     if (exist) {
       const index = cart.indexOf(exist);
       const nextCart = [...cart];
       nextCart[index] = {
         ...nextCart[index],
-        amount: nextCart[index].amount + 1
+        amount: nextCart[index].amount + 1,
       };
       setCart(nextCart);
       return;
@@ -35,11 +35,12 @@ const App = () => {
       // add
       // find item in data
       let item = null;
-      Object.keys(data.menu).forEach(menuKey => {
-        data.menu[menuKey].forEach(menuItem => {
-          if (menuItem.id === itemId) {
-            item = menuItem;
+      data.categories.forEach((category) => {
+        category.meals.forEach((meal) => {
+          if (meal.id === itemId) {
+            item = meal;
           }
+          meal.price = parseFloat(meal.price);
         });
       });
       if (item === null) {
@@ -51,15 +52,15 @@ const App = () => {
         id: itemId,
         title: item.title,
         price: item.price,
-        amount: 1
+        amount: 1,
       });
       setCart(nextCart);
       return;
     }
   };
 
-  const removeItem = itemId => {
-    const exist = cart.find(cartItem => cartItem.id === itemId);
+  const removeItem = (itemId) => {
+    const exist = cart.find((cartItem) => cartItem.id === itemId);
     if (!exist) {
       console.error(`Cannot remove iten not in cart !`);
       return;
@@ -68,30 +69,32 @@ const App = () => {
     const nextCart = [...cart];
     nextCart[index] = {
       ...nextCart[index],
-      amount: nextCart[index].amount - 1
+      amount: nextCart[index].amount - 1,
     };
-    const cartNotZero = nextCart.filter(cartItem => cartItem.amount > 0);
+    const cartNotZero = nextCart.filter((cartItem) => cartItem.amount > 0);
     setCart(cartNotZero);
     return;
   };
 
-  React.useEffect(() => {
-    axios.get("https://deliveroo-api.now.sh/menu").then(response => {
-      Object.keys(response.data.menu).forEach(menuKey => {
-        response.data.menu[menuKey].forEach(menuItem => {
-          menuItem.price = parseFloat(menuItem.price);
+  useEffect(() => {
+    axios
+      .get("https://lereacteur-deliveroo-api.herokuapp.com/")
+      .then((response) => {
+        response.data.categories.forEach((category) => {
+          category.meals.forEach((meal) => {
+            meal.price = parseFloat(meal.price);
+          });
         });
-      });
 
-      setData(response.data);
-    });
+        setData(response.data);
+      });
   }, []);
 
   return (
     <div>
       <Header restaurant={data ? data.restaurant : null} />
       <Content
-        menu={data ? data.menu : null}
+        menu={data ? data.categories : null}
         cart={cart}
         addItem={addItem}
         removeItem={removeItem}
