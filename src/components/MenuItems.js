@@ -1,13 +1,11 @@
-import React from 'react';
-import MenuItem from './MenuItem';
+import MenuItem from "./MenuItem";
 
-const MenuItems = props => {
-  const { name, items, addItem } = props;
+const MenuItems = ({ name, items, addItem }) => {
   return (
     <div className="MenuItems">
       <h2>{name}</h2>
       <div className="MenuItems--items">
-        {items.map(item => {
+        {items.map((item) => {
           return (
             <MenuItem
               key={item.id}

@@ -1,7 +1,4 @@
-import React from 'react';
-
-const StarIcon = props => {
-  const { size = 24, style = {} } = props;
+const StarIcon = ({ size = 24, style = {} }) => {
   return (
     <svg
       style={{ width: size, height: size, ...style }}

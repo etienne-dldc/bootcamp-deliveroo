@@ -1,8 +1,4 @@
-import React from 'react';
-
-const RestaurantInfos = props => {
-  const { name, description, cover } = props;
-
+const RestaurantInfos = ({ name, description, cover }) => {
   return (
     <div className="RestaurantInfos">
       <div className="RestaurantInfos--center">
@@ -10,7 +6,11 @@ const RestaurantInfos = props => {
           <h1>{name}</h1>
           <p>{description}</p>
         </div>
-        <img className="RestaurantInfos--cover" src={cover} alt="restaurant cover" />
+        <img
+          className="RestaurantInfos--cover"
+          src={cover}
+          alt="restaurant cover"
+        />
       </div>
     </div>
   );

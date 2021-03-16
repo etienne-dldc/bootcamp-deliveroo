@@ -1,9 +1,6 @@
-import React from "react";
 import MenuItems from "./MenuItems";
 
-const Menu = (props) => {
-  const { menu, addItem } = props;
-
+const Menu = ({ menu, addItem }) => {
   const nonEmptyMenu = menu.filter((menu) => {
     return menu.meals.length > 0;
   });

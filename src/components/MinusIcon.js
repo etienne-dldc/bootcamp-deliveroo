@@ -1,7 +1,4 @@
-import React from 'react';
-
-const MinusIcon = props => {
-  const { size = 24, style = {} } = props;
+const MinusIcon = ({ size = 24, style = {} }) => {
   return (
     <svg
       style={{ width: size, height: size, ...style }}
